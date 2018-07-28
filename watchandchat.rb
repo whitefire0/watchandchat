@@ -74,7 +74,8 @@ class TelChat
   def help(conn)
     conn.print "\nHelp menu: \n"
     conn.print "1. Type /list to see all chatters\n"
-    conn.print "2. Go fuck yourself\n"
+    conn.print "2. Type /game to spin up an instance of RickRPG!\n"
+    conn.print "3. Go fuck yourself\n"
   end
 
   def list(conn)

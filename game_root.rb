@@ -1,5 +1,3 @@
-require 'pry'
-require 'pry-byebug'
 require 'awesome_print'
 require 'colorize'
 
