@@ -23,8 +23,11 @@ class TelChat
   end
   
   def broadcast(msg)
+    date = `date`.to_s.gray
     @chatters.each do |socket|
+      socket.print date
       socket.print msg
+      socket.puts
     end
   end
   
@@ -51,6 +54,7 @@ class TelChat
           loop do
             conn.print "> "
             line = get_input(conn)
+            conn.puts
             case line
             when "/help"
               help(conn)
@@ -61,7 +65,7 @@ class TelChat
             when "/game"
               start_game_instance(conn, name)
             else
-              broadcast("\n#{name}: #{line}\n".yellow)
+              broadcast("#{name}: #{line}\n".yellow)
             end
           end
         rescue EOFError
