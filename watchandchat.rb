@@ -1,5 +1,6 @@
 require 'socket'
 require 'rainbow/refinement'
+require_relative 'game_root'
 
 using Rainbow
 
@@ -57,6 +58,8 @@ class TelChat
               list(conn)
             when "/exit"
               close(conn)
+            when "/game"
+              start_game_instance(conn, name)
             else
               broadcast("\n#{name}: #{line}\n".yellow)
             end
