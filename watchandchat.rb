@@ -49,6 +49,7 @@ class TelChat
         broadcast("#{name} has joined the channel".magenta)
         @chatters << socket
         @id_counter += 1
+        id = @id_counter
         @records << {name: name, id: @id_counter}
         begin
           loop do
@@ -61,7 +62,7 @@ class TelChat
             when "/list"
               list(conn)
             when "/exit"
-              close(conn)
+              close(conn, name, id)
             when "/game"
               start_game_instance(conn, name)
             else
@@ -69,7 +70,7 @@ class TelChat
             end
           end
         rescue EOFError
-          close(conn)
+          close(conn, name, id)
         end
       end
     end
@@ -79,18 +80,18 @@ class TelChat
     conn.print "\nHelp menu: \n"
     conn.print "1. Type /list to see all chatters\n"
     conn.print "2. Type /game to spin up an instance of RickRPG!\n"
-    conn.print "3. Go fuck yourself\n"
+    conn.print "3. Suggestions welcome...\n"
   end
 
   def list(conn)
     @records.each_with_index { |record, index| conn.print "#{index + 1}: #{record[:name]} - id: #{record[:id]}\n".magenta}
   end
 
-  def close(conn)
+  def close(conn, name, id)
+    broadcast("#{name} has left the channel".magenta)
     conn.close
     @chatters.delete(conn)
-    @name.delete(name)
-    broadcast("#{name} has left the channel".magenta)
+    @records.delete_if { |r| r[:id] == id}
   end
 
   def get_input(conn)
