@@ -1,5 +1,6 @@
 require 'socket'
 require 'rainbow/refinement'
+require 'pry'
 require_relative 'game_root'
 
 using Rainbow
@@ -45,12 +46,23 @@ class TelChat
     
     while (socket = server.accept)
       Thread.new(socket) do |conn|
+
+        # binding.pry
+
+        if @records.any? { |e| e[:ip] == conn.addr[3] }
+          conn.puts "You have already logged on from this IP address. Get lost!"
+          conn.close
+          break
+        end
+
         name = welcome(socket)
-        broadcast("#{name} has joined the channel".magenta)
+        broadcast("#{name} has joined the channel on IP: #{conn.addr[3][7..16]}\n".magenta)
         @chatters << socket
         @id_counter += 1
         id = @id_counter
-        @records << {name: name, id: @id_counter}
+        @records << {name: name, id: @id_counter, ip: conn.addr[3]}
+
+
         begin
           loop do
             conn.print "> "
