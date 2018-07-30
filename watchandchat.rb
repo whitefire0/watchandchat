@@ -76,8 +76,9 @@ class TelChat
         @records << record
         @server.log.info("\n\nNew client joined #{date}\nName: #{record[:name]}\nClient ID:#{record[:id]}\nIP Address: #{record[:ip]}\nPORT: #{record[:port]}\n")
 
+        
+        loop do
         begin
-          loop do
             conn.print "> "
             line = get_input(conn)
             conn.puts
@@ -88,6 +89,7 @@ class TelChat
               list(conn)
             when "/exit"
               close(conn, name, id)
+              break
             when "/game"
               start_game_instance(conn, name)
               @server.log.warn("\n#{date} #{name} span up the game.\n")
@@ -95,10 +97,11 @@ class TelChat
               broadcast("#{name}: #{line}\n".yellow)
               @server.log.info("\n#{date} #{name}: #{line}\n")
             end
-          end
-        rescue EOFError
+        rescue EOFError, Errno::EPIPE
           close(conn, name, id)
+          break
         end
+      end
       end
     end
   end
@@ -129,11 +132,11 @@ class TelChat
   end
 
   def close(conn, name, id)
-    broadcast("#{name} has left the channel".magenta)
-    @server.log.info("\n#{date} #{name} left the channel.\n")
     conn.close
     @chatters.delete(conn)
     @records.delete_if { |r| r[:id] == id}
+    broadcast("#{name} has left the channel".magenta)
+    @server.log.info("\n#{date} #{name} left the channel.\n")
   end
 
   def get_input(conn)

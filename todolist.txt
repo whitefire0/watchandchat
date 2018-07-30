@@ -1,0 +1,11 @@
+TodoList
+
+0. Have a seperate client-server class rather than throwing it all into one big mess
+0.5 Catch the disconnect error that gets thrown to the server output
+
+1. Charlie = loop do TCPSocket(IP, PORT), spamming the server
+    needs limit
+      but how if all machines are on the same IP address?
+    
+2. Spin up game in a seperate thread to prevent seeing chat client messages whilst in game
+3. Remove game sleep delays as batman didn't like it

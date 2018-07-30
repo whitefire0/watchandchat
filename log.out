@@ -1,0 +1,27 @@
+# Logfile created on 2018-07-30 14:20:09 +0100 by logger.rb/61378
+I, [2018-07-30T14:20:09.128707 #25391]  INFO -- : 
+
+New client joined Mon 30 Jul 2018 14:20:09 BST
+
+Name: Rick
+Client ID:1
+IP Address: ::ffff:127.0.0.1
+PORT: 65247
+
+I, [2018-07-30T14:20:11.768775 #25391]  INFO -- : 
+Mon 30 Jul 2018 14:20:11 BST
+ Rick left the channel.
+
+I, [2018-07-30T14:21:49.584243 #26311]  INFO -- : 
+
+New client joined Mon 30 Jul 2018 14:21:49 BST
+
+Name: Rick
+Client ID:1
+IP Address: ::ffff:127.0.0.1
+PORT: 49268
+
+I, [2018-07-30T14:21:53.282737 #26311]  INFO -- : 
+Mon 30 Jul 2018 14:21:53 BST
+ Rick left the channel.
+
