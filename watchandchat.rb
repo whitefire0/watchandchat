@@ -19,10 +19,6 @@ class TelServer < TCPServer
   end
 end
 
-class TelFile < File
-
-end
-
 class TelChat
   def initialize(port)
     @chatters = []
@@ -39,7 +35,7 @@ class TelChat
     socket.print "\nType text and hit enter to broadcast.\nType /help at any time for menu commands.\nType /exit to leave.\n".green.bright
     return name
   end
-  
+
   def broadcast(msg)
     @chatters.each do |socket|
       socket.print date.gray
@@ -47,7 +43,7 @@ class TelChat
       socket.puts
     end
   end
-  
+
   def create_server(port)
     server = TelServer.new(port)
     if server.respond_to?(:getsockname)
@@ -55,12 +51,11 @@ class TelChat
     else
       print "Server error. Contact administrator\n".red
       @server.log.error("Unable to create server on #{port}")
-    end 
+    end
     return server
   end
 
   def run_server
-    
     while (socket = @server.accept)
       Thread.new(socket) do |conn|
 
@@ -76,7 +71,7 @@ class TelChat
         @records << record
         @server.log.info("\n\nNew client joined #{date}\nName: #{record[:name]}\nClient ID:#{record[:id]}\nIP Address: #{record[:ip]}\nPORT: #{record[:port]}\n")
 
-        
+
         loop do
         begin
             conn.print "> "
@@ -117,7 +112,7 @@ class TelChat
   end
 
   def date
-    `date`.to_s
+    Time.now.utc.to_s
   end
 
   def help(conn)
