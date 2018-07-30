@@ -1,7 +1,7 @@
 require 'socket'
 require 'logger'
-# require 'pry'
-# require_relative 'game_root'
+require 'pry'
+require_relative 'game_root'
 
 require 'rainbow/refinement'
 using Rainbow

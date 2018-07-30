@@ -10,11 +10,10 @@ require_relative 'src/enemies'
 require_relative 'src/socketing'
 
 def start_game_instance(conn, name)
-  Socketing::set(conn)
   play_again = true
   while play_again do
     game = Game.new
-    interface = UserInterface.new(game, name)
+    interface = UserInterface.new(conn, game, name)
     game.menu_instance = interface
     play_again = interface.manager
   end

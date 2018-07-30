@@ -24,7 +24,7 @@ module TelChat
     end
 
     def broadcast(msg)
-      @chatters.each do |socket|
+      @chatters.reject(&:in_game).each do |socket|
         socket.print date.cyan
         socket.print " "
         socket.print msg
@@ -44,8 +44,8 @@ module TelChat
     end
 
     def run_server
-      while (socket = @server.accept)
-        Thread.new(socket) do |conn|
+      loop do
+        Thread.new(@server.accept) do |conn|
           @server.log.info "Incoming connection on #{conn.peeraddr}"
           client = TelChat::ClientConnection.new(self, conn)
 

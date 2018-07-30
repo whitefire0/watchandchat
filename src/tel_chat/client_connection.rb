@@ -2,12 +2,14 @@ using Rainbow
 
 module TelChat
   class ClientConnection
-    attr_reader :server, :socket, :connected_at, :name
+    attr_reader :server, :socket, :connected_at, :in_game, :name
 
     def initialize(server, socket)
       @server = server
       @socket = socket
       @connected_at = date
+
+      @in_game = false
     end
 
     def welcome
@@ -37,7 +39,9 @@ module TelChat
               close
               break
             when "/game"
-              # start_game_instance(conn, name)
+              @in_game = true
+              start_game_instance
+              @in_game = false
               # @server.log.warn("\n#{date} #{name} span up the game.\n")
             else
               # @on_message.call(line)
@@ -77,6 +81,17 @@ module TelChat
       socket.print "1. Type /list to see all chatters\n"
       socket.print "2. Type /game to spin up an instance of RickRPG!\n"
       socket.print "3. Suggestions welcome...\n"
+    end
+
+    def start_game_instance
+      play_again = true
+      while play_again do
+        game = Game.new
+        interface = UserInterface.new(socket, game, name)
+        game.menu_instance = interface
+        play_again = interface.manager
+      end
+      puts "Welcome back to watchandchat!".colorize(:green)
     end
 
     def list
