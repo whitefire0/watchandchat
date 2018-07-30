@@ -68,7 +68,7 @@ class UserInterface
       when /^g|G/
         @game_instance.set_player_class('Gimp')
       else
-        puts "Invalid choice, please choose again.".colorize(:light_black)
+        @conn.puts "Invalid choice, please choose again.".colorize(:light_black)
       end
     end
     welcome_player
