@@ -1,26 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    awesome_print (1.8.0)
-    byebug (10.0.2)
-    coderay (1.1.2)
-    colorize (0.8.1)
-    method_source (0.9.0)
-    pry (0.11.3)
-      coderay (~> 1.1.0)
-      method_source (~> 0.9.0)
-    pry-byebug (3.6.0)
-      byebug (~> 10.0)
-      pry (~> 0.10)
+    rainbow (3.0.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  awesome_print
-  colorize
-  pry
-  pry-byebug
+  rainbow
 
 BUNDLED WITH
-   1.16.2
+   1.16.0
