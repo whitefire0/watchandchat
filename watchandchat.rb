@@ -13,7 +13,8 @@ class TelChat
     @chatters = []
     @records = []
     @id_counter = 0
-    run_server(create_server(port))
+    @server = create_server(port)
+    run_server
   end
 
   def welcome(socket)
@@ -42,26 +43,26 @@ class TelChat
       return server
   end
 
-  def run_server(server)
+  def run_server
     
-    while (socket = server.accept)
+    while (socket = @server.accept)
       Thread.new(socket) do |conn|
 
-        # binding.pry
-
-        if @records.any? { |e| e[:ip] == conn.addr[3] }
+        if @records.any? { |e| e[:ip] == conn.peeraddr[3] }
           conn.puts "You have already logged on from this IP address. Get lost!"
           conn.close
-          break
         end
 
         name = welcome(socket)
-        broadcast("#{name} has joined the channel on IP: #{conn.addr[3][7..16]}\n".magenta)
+        broadcast("#{name} has joined the channel from IP: #{conn.peeraddr[3]}, PORT: #{conn.peeraddr[1]}\n".magenta)
+
+        # binding.pry
+        @server.puts "hello"
+
         @chatters << socket
         @id_counter += 1
         id = @id_counter
-        @records << {name: name, id: @id_counter, ip: conn.addr[3]}
-
+        @records << {name: name, id: @id_counter, ip: conn.peeraddr[3], port: conn.peeraddr[1]}
 
         begin
           loop do
